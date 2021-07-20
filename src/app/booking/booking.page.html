@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Reservaciones</ion-title>
+        <button slot="end" (click)="signout()" style="background-color: inherit; margin-left: 12px">
+            <ion-icon style="font-size: 30px;" name="log-out-outline"></ion-icon>
+        </button>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <h2 class="ion-text-center ion-padding title">Lista de Reservaciones</h2>
+        <ion-card>
+            <ion-searchbar placeholder="BookingId"></ion-searchbar>
+            <ion-searchbar placeholder="Precio"></ion-searchbar>
+            <ion-item>
+                <ion-label position="floating">Opción</ion-label>
+                <ion-select>
+                    <ion-select-option value="f">Female</ion-select-option>
+                    <ion-select-option value="m">Male</ion-select-option>
+                </ion-select>
+            </ion-item>
+        </ion-card>
+        
+        <ion-item>
+            <ion-avatar slot="end">
+                <ion-icon (click)="presentModal()" name="add-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+                <h2>BookingId</h2>
+                <h3>Cliente</h3>
+                <p>Precio</p>
+            </ion-label>
+        </ion-item>
+
+    </ion-list>
+</ion-content>
