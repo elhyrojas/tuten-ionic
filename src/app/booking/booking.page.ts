@@ -1,48 +1,95 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { BookingService } from 'src/providers/booking.service';
 import { DetailBookingPage } from '../detail-booking/detail-booking.page';
 
 @Component({
-  selector: 'app-booking',
-  templateUrl: './booking.page.html',
-  styleUrls: ['./booking.page.scss'],
+    selector: 'app-booking',
+    templateUrl: './booking.page.html',
+    styleUrls: ['./booking.page.scss'],
 })
-export class BookingPage implements OnInit {
+export class BookingPage {
+    bookings: any;
+    form: FormGroup;
+    textSearch = '';
+    fieldSearch = '';
+    loading: any;
 
-  constructor(
-    private router: Router,
-    public modalController: ModalController
-  ) { }
+    constructor(
+        private router: Router,
+        public modalController: ModalController,
+        public bookingService: BookingService,
+        private formBuilder: FormBuilder,
+        public loadingCtrl: LoadingController,
+        public toastCtrl: ToastController
+    ) {
+        this.createForm();
+        this.presentLoading();
+     }
 
-  ngOnInit() {
-  }
+    ionViewDidEnter() {
+        this.loadBookings();
+    }
 
-  signout() {
-    this.router.navigate(['/login']);
-  }
+    async presentLoading() {
+        this.loading = await this.loadingCtrl.create({
+            message: 'Por favor, espere...',
+        });
+        await this.loading.present();
+    }
 
-  async presentModal(e) {
-    // console.log(e)
-    const modal = await this.modalController.create({
-      component: DetailBookingPage,
-      cssClass: 'my-custom-class'
-      // componentProps: {
-      // }
-    });
+    loadBookings() {
+        this.bookingService.getAllBooking().subscribe(response => {
+            this.bookings = response;
+            this.loading.dismiss();
+        },
+        (error) => {
+            this.loading.dismiss();
+            if (error.status === 401) {
+                this.router.navigate(['/login']);
+                this.showMessage('No está autorizado.');
+            }
+        });
+    }
 
-    modal.onDidDismiss().then((data) => {
-      // console.log(data)
-      // console.log(data.data)
-      // if (data.data.data !== undefined) {
-      //   if (data.data.data.length > 2) {
-      //     this.updateAppointment(data.data.data)
-      //   }
-      // }
-    });
+    async showMessage(message: string) {
+        const toast = await this.toastCtrl.create({
+            message,
+            duration: 3000
+        });
+        toast.present();
+    }
 
-    await modal.present();
+    createForm() {
+        this.form = this.formBuilder.group({
+            id: ['', []],
+            price: ['', []],
+            option: ['like', []],
+        });
+    }
 
-  }
+    async presentModal(booking) {
+        const modal = await this.modalController.create({
+            component: DetailBookingPage,
+            cssClass: 'my-custom-class',
+            componentProps: {
+                booking
+            }
+        });
+
+        await modal.present();
+    }
+
+    signout() {
+        localStorage.removeItem('token');
+        this.router.navigate(['/login']);
+    }
+
+    search(event, field) {
+        this.textSearch = event.detail.value;
+        this.fieldSearch = field;
+    }
 
 }

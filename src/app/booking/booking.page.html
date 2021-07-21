@@ -11,25 +11,28 @@
     <ion-list>
         <h2 class="ion-text-center ion-padding title">Lista de Reservaciones</h2>
         <ion-card>
-            <ion-searchbar placeholder="BookingId"></ion-searchbar>
-            <ion-searchbar placeholder="Precio"></ion-searchbar>
-            <ion-item>
-                <ion-label position="floating">Opción</ion-label>
-                <ion-select>
-                    <ion-select-option value="f">Female</ion-select-option>
-                    <ion-select-option value="m">Male</ion-select-option>
-                </ion-select>
-            </ion-item>
+            <div [formGroup]="form">
+                <ion-searchbar placeholder="BookingId" formControlName="id" (ionChange)="search($event, 'bookingId')"></ion-searchbar>
+                <ion-searchbar placeholder="Precio" formControlName="price" (ionChange)="search($event, 'bookingPrice')"></ion-searchbar>
+                <!-- <ion-item>
+                    <ion-label position="floating">Opción</ion-label>
+                    <ion-select formControlName="option" (ionChange)="search($event)">
+                        <ion-select-option value="like">Like</ion-select-option>
+                        <ion-select-option value="greaterThan">>=</ion-select-option>
+                        <ion-select-option value="lessThan"><=</ion-select-option>
+                    </ion-select>
+                </ion-item> -->
+            </div>
         </ion-card>
-        
-        <ion-item>
+
+        <ion-item *ngFor="let booking of bookings | filter: textSearch: fieldSearch">
             <ion-avatar slot="end">
-                <ion-icon (click)="presentModal()" name="add-outline"></ion-icon>
+                <ion-icon (click)="presentModal(booking)" name="add-outline"></ion-icon>
             </ion-avatar>
             <ion-label>
-                <h2>BookingId</h2>
-                <h3>Cliente</h3>
-                <p>Precio</p>
+                <h2>BookingId: {{ booking.bookingId }} </h2>
+                <h3>Cliente: {{ booking.tutenUserClient.firstName }} {{ booking.tutenUserClient.lastName }} </h3>
+                <p>Precio: {{ booking.bookingPrice }} </p>
             </ion-label>
         </ion-item>
 

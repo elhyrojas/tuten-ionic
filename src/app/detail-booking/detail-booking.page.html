@@ -8,21 +8,26 @@
 </ion-header>
 
 <ion-content>
-    <ion-list>
-        <ion-item>
-            BookingId:
-        </ion-item>
-        <ion-item>
-            Cliente:
-        </ion-item>
-        <ion-item>
-            Fecha de Creación:
-        </ion-item>
-        <ion-item>
-            Dirección:
-        </ion-item>
-        <ion-item>
-            Precio:
-        </ion-item>
+    <ion-list class="ion-padding">
+        <ion-label class="ion-padding">
+            <h2 style="padding-bottom: 5px;">BookingId:</h2>
+            <h2>{{ booking.bookingId }}</h2>
+        </ion-label>
+        <ion-label class="ion-padding">
+            <h2 style="padding-bottom: 5px;">Cliente:</h2>
+            <h2>{{ booking.tutenUserClient.firstName }} {{ booking.tutenUserClient.lastName }}</h2>
+        </ion-label>
+        <ion-label class="ion-padding">
+            <h2 style="padding-bottom: 5px;">Fecha de Creación:</h2>
+            <h2>{{ booking.bookingCreatedTime | date: 'dd/MM/yyyy' }}</h2>
+        </ion-label>
+        <ion-label class="ion-padding">
+            <h2 style="padding-bottom: 5px;">Dirección:</h2>
+            <h2>{{ booking.locationId.streetAddress }}</h2>
+        </ion-label>
+        <ion-label class="ion-padding">
+            <h2 style="padding-bottom: 5px;">Precio:</h2>
+            <h2>{{ booking.bookingPrice }}</h2>
+        </ion-label>
     </ion-list>
 </ion-content>

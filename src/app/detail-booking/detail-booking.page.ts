@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -6,22 +6,15 @@ import { ModalController } from '@ionic/angular';
   templateUrl: './detail-booking.page.html',
   styleUrls: ['./detail-booking.page.scss'],
 })
-export class DetailBookingPage implements OnInit {
+export class DetailBookingPage {
+  @Input() booking: any;
 
   constructor(
     public modalController: ModalController,
     ) { }
 
-  ngOnInit() {
-  }
-
   dismissModal() {
-    // console.log("cerrando")
-    this.modalController.dismiss(
-      {
-      // 'dismissed': true,
-      // 'data': this.comment,
-    });
+    this.modalController.dismiss();
   }
 
 }
